@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Event Details{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">{{ event.name }}</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Event Details</h5>
+            <p class="card-text"><strong>Date:</strong> {{ event.date|date('Y-m-d H:i') }}</p>
+            <p class="card-text"><strong>Location:</strong> {{ event.location }}</p>
+            <p class="card-text"><strong>Available Spots:</strong> {{ event.availableSpots }}</p>
+            <a href="{{ path('event_register', {'id': event.id}) }}" class="btn btn-primary">Register for this event</a>
+            <a href="{{ path('event_list') }}" class="btn btn-secondary">Back to Event List</a>
+        </div>
+    </div>
+{% endblock %}

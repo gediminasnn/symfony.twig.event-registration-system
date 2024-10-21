@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register for {{ event.name }}{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">Register for {{ event.name }}</h1>
+
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+         <div class="mb-3">
+            {{ form_label(form.name, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Enter your name'}}) }}
+            {{ form_errors(form.name) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.email, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Enter your email address'}}) }}
+            {{ form_errors(form.email) }}
+        </div>
+
+        {{ form_rest(form) }}
+
+        <button type="submit" class="btn btn-primary">Register</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('event_list') }}" class="btn btn-secondary mt-3">Back to Event List</a>
+{% endblock %}

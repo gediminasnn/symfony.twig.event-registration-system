@@ -1,7 +1,7 @@
 
 # Event Registration System Application
 
-![register](https://github.com/user-attachments/assets/a1d5a98a-3621-430d-a55d-8d02937adf53)
+![list](https://github.com/user-attachments/assets/d1a752de-21cc-4bda-bcf0-ffce964db28f)
 
 This Event Registration System is built with Symfony. It allows users to register for events through a web interface. This document outlines the steps required to set up the system on your local development environment.
 
@@ -32,7 +32,7 @@ Change directory to the application root:
     
 #### 3.  **Prepare the Environment File**
     
-Prepare the application's environment file. Locate the `env.example` file in the application root and create a new file named `.env` using it as a template. Optionally, edit the `.env` file to adjust any environment variables specific to your setup.
+Prepare the application's environment file. Locate the `.env.example` file in the application root and create a new file named `.env` using it as a template. Optionally, edit the `.env` file to adjust any environment variables specific to your setup.
 
 ####  4.  **Start the Docker Containers**
     
@@ -42,27 +42,31 @@ Use Docker Compose to start the Docker containers. Run the following command in 
     
 This command builds and starts all containers needed for the application. The first time you run this, it might take a few minutes to download and build everything.
 
-#### 5.  **Setup Development Database**
-
-After the Docker environment is up and running, set up the development database by executing the following command:
-    
-`docker-compose exec php php bin/console doctrine:migrations:migrate`
-
-This command runs the migration files to create the necessary database tables for the application.
-
-#### 6. **Run Database Seeds**
+#### 5. **Run Database Seeds**
 
 After successfully running the migrations, it's time to populate the database with some initial data, run the database fixtures. Ensure your Docker containers are up and running. In the terminal, execute the following command:
 
 `docker-compose exec php bin/console doctrine:fixtures:load`
 
 This command will execute the fixtures defined in your application, populating the database with sample or default data.
-    
+
+#### 6. **(Optional) Create Test Database**
+
+To set up the test database, execute the following commands:
+
+`docker-compose exec php bin/console doctrine:database:create --env=test`
+
+and
+
+`docker-compose exec php bin/console doctrine:migrations:migrate --env=test`
+
+This command creates the necessary database for running tests.    
+
 #### 7.  **(Optional) Run Tests**
     
 Ensure that your Docker containers are still up and running. Open a new terminal window or tab and execute the following command:
     
-`docker-compose exec php php bin/phpunit` 
+`docker-compose exec php bin/phpunit` 
     
 This command will use phpunit's built-in test runner to execute your application's test suite. It will run all the tests located in the tests directory of your application.
 

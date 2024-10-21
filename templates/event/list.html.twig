@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Event List{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">Available Events</h1>
+
+    {% if events %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Event Name</th>
+                    <th>Date & Time</th>
+                    <th>Location</th>
+                    <th>Available Spots</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                    <tr>
+                        <td>{{ event.name }}</td>
+                        <td>{{ event.date|date('Y-m-d H:i') }}</td>
+                        <td>{{ event.location }}</td>
+                        <td>{{ event.availableSpots }}</td>
+                        <td>
+                            <a href="{{ path('event_show', {'id': event.id}) }}" class="btn btn-info btn-sm">View</a>
+                            <a href="{{ path('event_register', {'id': event.id}) }}" class="btn btn-primary btn-sm">Register</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning">No events available.</div>
+    {% endif %}
+{% endblock %}
