@@ -5,16 +5,19 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\EventRegistration;
 use App\Form\EventRegistrationType;
-use App\Interfaces\EventServiceInterface;
+use App\Service\EventServiceInterface;
 use App\Exception\EventFullException;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class EventController extends AbstractController
 {
     #[Route('/', name: 'event_list')]
-    public function listEvents(EventServiceInterface $eventService)
+    public function listEvents(EventServiceInterface $eventService): Response
     {
         $events = $eventService->listEvents();
 
@@ -24,7 +27,7 @@ class EventController extends AbstractController
     }
 
     #[Route('/event/{id}', name: 'event_show')]
-    public function showEvent(Event $event)
+    public function showEvent(Event $event): Response
     {
         return $this->render('event/show.html.twig', [
             'event' => $event,
@@ -32,13 +35,16 @@ class EventController extends AbstractController
     }
 
     #[Route('/event/{id}/register', name: 'event_register')]
-    public function registerForEvent(Request $request, Event $event, EventServiceInterface $eventService)
-    {
+    public function registerForEvent(
+        Request $request,
+        Event $event,
+        EventServiceInterface $eventService,
+        LoggerInterface $logger
+    ): RedirectResponse|Response {
         $registration = new EventRegistration();
         $registration->setEvent($event);
 
         $form = $this->createForm(EventRegistrationType::class, $registration);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -50,7 +56,8 @@ class EventController extends AbstractController
             } catch (EventFullException $e) {
                 $this->addFlash('danger', $e->getMessage());
             } catch (\Exception $e) {
-                $this->addFlash('danger', 'An unexpected error occurred : ' . $e->getMessage());
+                $this->addFlash('danger', 'An unexpected error occurred: ' . $e->getMessage());
+                $logger->error('Unexpected error during event registration: ' . $e->getMessage());
             }
         }
 

@@ -5,9 +5,9 @@ namespace App\Service;
 use App\Entity\Event;
 use App\Entity\EventRegistration;
 use App\Exception\EventFullException;
-use App\Interfaces\EventServiceInterface;
-use App\Interfaces\EventRepositoryInterface;
-use App\Interfaces\EventRegistrationRepositoryInterface;
+use App\Service\EventServiceInterface;
+use App\Repository\EventRepositoryInterface;
+use App\Repository\EventRegistrationRepositoryInterface;
 
 class EventService implements EventServiceInterface
 {

@@ -29,12 +29,8 @@ Change directory to the application root:
 `cd symfony.twig.event-registration-system` 
     
 (Optional) Replace `symfony.twig.event-registration-system` with the path where you cloned the repository.
-    
-#### 3.  **Prepare the Environment File**
-    
-Prepare the application's environment file. Locate the `.env.example` file in the application root and create a new file named `.env` using it as a template. Optionally, edit the `.env` file to adjust any environment variables specific to your setup.
 
-####  4.  **Start the Docker Containers**
+####  3.  **Start the Docker Containers**
     
 Use Docker Compose to start the Docker containers. Run the following command in your terminal:
     
@@ -42,7 +38,7 @@ Use Docker Compose to start the Docker containers. Run the following command in 
     
 This command builds and starts all containers needed for the application. The first time you run this, it might take a few minutes to download and build everything.
 
-#### 5. **Run Database Seeds**
+#### 4. **Run Database Seeds**
 
 After successfully running the migrations, it's time to populate the database with some initial data, run the database fixtures. Ensure your Docker containers are up and running. In the terminal, execute the following command:
 
@@ -50,7 +46,7 @@ After successfully running the migrations, it's time to populate the database wi
 
 This command will execute the fixtures defined in your application, populating the database with sample or default data.
 
-#### 6. **(Optional) Create Test Database**
+#### 5. **(Optional) Create Test Database**
 
 To set up the test database, execute the following commands:
 
@@ -62,7 +58,7 @@ and
 
 This command creates the necessary database for running tests.    
 
-#### 7.  **(Optional) Run Tests**
+#### 6.  **(Optional) Run Tests**
     
 Ensure that your Docker containers are still up and running. Open a new terminal window or tab and execute the following command:
     

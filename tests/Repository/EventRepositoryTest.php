@@ -4,9 +4,7 @@ namespace App\Tests\Repository;
 
 use App\Entity\Event;
 use App\Repository\EventRepository;
-use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Zenstruck\Foundry\Test\ResetDatabase;
 
 class EventRepositoryTest extends KernelTestCase
 {

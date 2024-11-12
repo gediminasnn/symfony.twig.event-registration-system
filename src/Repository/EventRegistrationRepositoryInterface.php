@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Interfaces;
+namespace App\Repository;
 
 use App\Entity\EventRegistration;
 
