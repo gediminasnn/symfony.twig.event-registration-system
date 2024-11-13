@@ -23,8 +23,11 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Service\EventServiceInterface:
-        alias: App\Service\EventService
+    App\Service\Event\ListEventsServiceInterface:
+        alias: App\Service\Event\ListEventsService
+
+    App\Service\Event\RegisterForEventServiceInterface:
+        alias: App\Service\Event\RegisterForEventService
 
     App\Repository\EventRepositoryInterface:
         alias: App\Repository\EventRepository

@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Event;
 
 use App\Entity\Event;
 use App\Entity\EventRegistration;
 use App\Exception\EventFullException;
-use App\Service\EventServiceInterface;
 use App\Repository\EventRepositoryInterface;
 use App\Repository\EventRegistrationRepositoryInterface;
 
-class EventService implements EventServiceInterface
+class RegisterForEventService implements RegisterForEventServiceInterface
 {
     private EventRepositoryInterface $eventRepository;
     private EventRegistrationRepositoryInterface $registrationRepository;
@@ -22,15 +21,10 @@ class EventService implements EventServiceInterface
         $this->registrationRepository = $registrationRepository;
     }
 
-    public function listEvents(): array
-    {
-        return $this->eventRepository->findAll();
-    }
-
-    public function registerForEvent(Event $event, EventRegistration $registration): void
+    public function register(Event $event, EventRegistration $registration): void
     {
         if ($event->getAvailableSpots() <= 0) {
-            throw new EventFullException();
+            throw new EventFullException('Sorry, this event is full.');
         }
 
         $event->setAvailableSpots($event->getAvailableSpots() - 1);

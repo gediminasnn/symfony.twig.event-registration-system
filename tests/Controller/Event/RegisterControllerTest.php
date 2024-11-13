@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tests\Controller;
+namespace App\Tests\Controller\Event;
 
 use App\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class EventControllerTest extends WebTestCase
+class RegisterControllerTest extends WebTestCase
 {
     private $client;
     private $entityManager;
@@ -25,80 +25,6 @@ class EventControllerTest extends WebTestCase
         $this->entityManager->close();
         $this->entityManager = null; // avoid memory leaks
     }
-
-    public function testListEvents()
-    {
-        // Create some events in the database
-        $event1 = new Event();
-        $event1->setName('Event 1');
-        $event1->setDate(new \DateTime('+1 day'));
-        $event1->setLocation('Location 1');
-        $event1->setAvailableSpots(100);
-
-        $event2 = new Event();
-        $event2->setName('Event 2');
-        $event2->setDate(new \DateTime('+2 days'));
-        $event2->setLocation('Location 2');
-        $event2->setAvailableSpots(50);
-
-        $this->entityManager->persist($event1);
-        $this->entityManager->persist($event2);
-        $this->entityManager->flush();
-
-        // Request the event list page
-        $crawler = $this->client->request('GET', '/');
-
-        // Assert that the response is successful
-        $this->assertResponseIsSuccessful();
-
-        // Assert that the page contains the events
-        $this->assertSelectorTextContains('h1', 'Available Events');
-
-        // Check that both events are listed
-        $this->assertSelectorTextContains('table', 'Event 1');
-        $this->assertSelectorTextContains('table', 'Event 2');
-    }
-
-    public function testShowEvent()
-    {
-        // Create an event in the database
-        $event = new Event();
-        $event->setName('Event Details Test');
-        $event->setDate(new \DateTime('+1 week'));
-        $event->setLocation('Test Location');
-        $event->setAvailableSpots(20);
-
-        $this->entityManager->persist($event);
-        $this->entityManager->flush();
-
-        // Request the event detail page
-        $this->client->request('GET', '/event/' . $event->getId());
-
-        // Assert that the response is successful
-        $this->assertResponseIsSuccessful();
-
-        // Assert that the page contains the event details
-        $this->assertSelectorTextContains('h1', 'Event Details Test');
-
-        // Get the crawler
-        $crawler = $this->client->getCrawler();
-
-        // Assert the date
-        $dateText = $crawler->filter('.card-text')->eq(0)->text();
-        $expectedDateText = 'Date: ' . $event->getDate()->format('Y-m-d H:i');
-        $this->assertSame($expectedDateText, $dateText);
-
-        // Assert the location
-        $locationText = $crawler->filter('.card-text')->eq(1)->text();
-        $expectedLocationText = 'Location: ' . $event->getLocation();
-        $this->assertSame($expectedLocationText, $locationText);
-
-        // Assert the available spots
-        $spotsText = $crawler->filter('.card-text')->eq(2)->text();
-        $expectedSpotsText = 'Available Spots: ' . $event->getAvailableSpots();
-        $this->assertSame($expectedSpotsText, $spotsText);
-    }
-
 
     public function testRegisterForEventSuccess()
     {
@@ -166,8 +92,8 @@ class EventControllerTest extends WebTestCase
 
         // Since the exception is caught and a flash message is added, we need to check for that
         // Assert that an error flash message is displayed
-        $this->assertSelectorExists('.alert-error, .alert-danger');
-        $this->assertSelectorTextContains('.alert-error, .alert-danger', 'Sorry, this event is full.');
+        $this->assertSelectorExists('.alert-danger');
+        $this->assertSelectorTextContains('.alert-danger', 'Sorry, this event is full.');
 
         // Assert that the event's available spots have not changed
         $updatedEvent = $this->entityManager->getRepository(Event::class)->find($event->getId());
